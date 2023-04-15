@@ -129,6 +129,7 @@ import {
     mdiSkipPrevious,
 } from "@mdi/js";
 import JSZip from "jszip";
+import { createTheme, MuiThemeProvider } from "@material-ui/core/styles";
 
 //import * as cornerstoneTools from "cornerstone-tools"
 
@@ -140,6 +141,39 @@ const drawerWidth = 240;
 const iconColor = "#FFFFFF";
 const activeColor = "rgba(0, 255, 0, 1.0)";
 
+// WebFontLoader.load({
+//     google: {
+//         families: ["Roboto:300,400,500,700", "Material Icons"],
+//     },
+// });
+
+//store.subscribe(() => console.log('store updated:', store.getState()));
+
+const theme = createTheme({
+    overrides: {
+        MuiFormControlLabel: {
+            label: {
+                fontSize: "0.85em",
+            },
+        },
+        MuiFormLabel: {
+            root: {
+                "&$focused": {
+                    color: "#CCCCCC",
+                },
+            },
+        },
+    },
+    palette: {
+        primary: {
+            main: "#004d40",
+        },
+        secondary: {
+            main: "#888888",
+        },
+        type: "dark",
+    },
+});
 const styles = (theme) => ({
     "@global": {
         body: {
@@ -307,6 +341,8 @@ class App extends PureComponent {
         visibleReferenceLines: true,
         visibleSeriesLink: true,
         isLoading: false,
+        fileObjects: [],
+        failed: false,
     };
 
     /*componentDidUpdate() {
@@ -366,6 +402,7 @@ class App extends PureComponent {
 
     handleOpenLocalFs = (filesSelected) => {
         //console.log('handleOpenLocalFs: ', filesSelected)
+        if (filesSelected.length === 0) return;
         if (filesSelected.length > 1) {
             this.files = filesSelected;
             this.changeLayout(1, 1);
@@ -533,17 +570,14 @@ class App extends PureComponent {
         this.toggleDicomdir();
     };
 
-    componentDidMount() {
-        // Need to set the renderNode since the drawer uses an overlay
-        //this.dialog = document.getElementById('drawer-routing-example-dialog')
-        window.scrollTo(0, 0);
+    downloadAndLoad = () => {
         if (this.props.zipFile) {
-            this.setState({ isLoading: true });
+            this.setState({ isLoading: true, failed: false });
             axios
                 .request({
                     url: this.props.zipFile,
                     method: "GET",
-                    responseType: "arraybuffer"
+                    responseType: "arraybuffer",
                 })
                 .then((response) => {
                     // Extract the zip file using JSZip
@@ -557,14 +591,24 @@ class App extends PureComponent {
                     });
                     Promise.all(fileObjectsPromises)
                         .then((fileObjects) => {
-                            this.setState({ isLoading: false });
+                            this.setState({ isLoading: false, fileObjects });
                             this.handleOpenLocalFs(fileObjects);
                         })
                         .catch((error) => {
                             console.log(error);
                         });
+                })
+                .catch(() => {
+                    this.setState({ isLoading: false, failed: true });
                 });
         }
+    };
+
+    componentDidMount() {
+        // Need to set the renderNode since the drawer uses an overlay
+        //this.dialog = document.getElementById('drawer-routing-example-dialog')
+        window.scrollTo(0, 0);
+        this.downloadAndLoad();
     }
 
     showAppBar = () => {
@@ -1745,13 +1789,38 @@ class App extends PureComponent {
         //console.log('mprMenu: ', mprMenu)
         //console.log('mprMode: ', this.state.mprMode)
 
-        if (this.state.isLoading){
-            return <h2> Downloading Files ..... </h2>
+        if (this.state.isLoading) {
+            return <h2> Downloading Files ..... </h2>;
+        }
+        if (!this.state.isLoading && this.state.failed) {
+            return (
+                <h2>
+                    Failed to download files .....
+                    <Tooltip title="Download again">
+                        <IconButton onClick={this.downloadAndLoad}>
+                            <Icon path={mdiRefresh} size={iconSize} color={iconColor} />
+                        </IconButton>
+                    </Tooltip>
+                </h2>
+            );
         }
 
         return (
             <Box style={this.props.style}>
-                <AppBar className={classes.appBar} style={{ height: "min-content" }} position="static" elevation={0}>
+                {!isOpen && (
+                    <Tooltip title="Refesh">
+                        <IconButton
+                            onClick={() => {
+                                this.handleOpenLocalFs(this.state.fileObjects);
+                                console.log("reload");
+                            }}
+                        >
+                            <Icon path={mdiRefresh} size={iconSize} color={iconColor} />
+                        </IconButton>
+                    </Tooltip>
+                )}
+
+                <AppBar className={classes.appBar} style={{ height: "min-content", position: "absolute", width: "min-content" }} position="static" elevation={0}>
                     <Toolbar variant="regular">
                         {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={this.toggleMainMenu}>
                             <MenuIcon />
@@ -1759,7 +1828,7 @@ class App extends PureComponent {
                         {this.appBarTitle(classes, isOpen, dcmViewer)}
                         {this.isMultipleFiles || mprMenu ? (
                             <div>
-                                <div align="center">
+                                <div>
                                     <IconButton onClick={this.listOpenFilesFirstFrame} size="small">
                                         <Icon path={mdiSkipBackward} size={"1.0rem"} color={iconColor} />
                                     </IconButton>
@@ -2181,7 +2250,9 @@ const NenApp = connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(A
 
 const Wrap = (props) => (
     <Provider store={store}>
-        <NenApp {...props} />{" "}
+        <MuiThemeProvider theme={theme}>
+            <NenApp {...props} />
+        </MuiThemeProvider>
     </Provider>
 );
 export default Wrap;
