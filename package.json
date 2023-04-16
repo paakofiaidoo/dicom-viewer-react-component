@@ -1,5 +1,5 @@
 {
-  "name": "u-dicom-viewer-package",
+  "name": "react-dicom-viewer",
   "version": "0.8.1",
   "private": true,
   "main": "./src/App.jsx",
