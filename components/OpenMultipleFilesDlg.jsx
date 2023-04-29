@@ -205,7 +205,7 @@ class OpenMultipleFilesDlg extends PureComponent {
   render() {
     return (
       <div>
-        <Dialog
+        {/* <Dialog
             open={true}
             onClose={this.close}
             aria-labelledby="alert-dialog-title"
@@ -219,7 +219,7 @@ class OpenMultipleFilesDlg extends PureComponent {
                     Cancel
                 </Button>
             </DialogActions>
-        </Dialog>
+        </Dialog> */}
       </div>
     )
   }

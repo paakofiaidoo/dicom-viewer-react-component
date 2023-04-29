@@ -1,18 +1,22 @@
 {
   "name": "react-dicom-viewer",
   "version": "0.1.1",
-  "main": "./src/App.jsx",
-  "module": "./src/App.jsx",
+  "main": "index.jsx",
+  "module": "index.jsx",
   "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
     "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.11.3",
-    "@material-ui/lab": "^4.11.3-deprecations.1",
-    "@mdi/js": "^5.3.45",
-    "@mdi/react": "^1.4.0",
+    "@material-ui/lab": "4.0.0-alpha.61",
+    "@mdi/js": "^7.2.96",
+    "@mdi/react": "^1.6.1",
     "@mui/icons-material": "^5.11.16",
-    "@react-md/material-icons": "^2.0.2",
-    "acorn": "^7.3.1",
-    "axios": "^1.3.5",
+    "@mui/material": "^5.12.1",
+    "@mui/styled-engine-sc": "^5.12.0",
+    "@react-md/material-icons": "^5.1.3",
+    "acorn": "^8.8.2",
+    "axios": "^1.3.6",
     "blob-util": "^2.0.2",
     "cornerstone-core": "^2.6.1",
     "cornerstone-file-image-loader": "^0.3.0",
@@ -20,45 +24,54 @@
     "cornerstone-tools": "^6.0.9",
     "cornerstone-wado-image-loader": "git+https://github.com/webnamics/cornerstoneWADOImageLoader.git",
     "cornerstone-web-image-loader": "^2.1.1",
-    "daikon": "^1.2.42",
-    "dexie": "^3.0.1",
-    "dicom-parser": "^1.8.5",
-    "file-saver": "^2.0.2",
+    "daikon": "^1.2.43",
+    "dexie": "^3.2.3",
+    "dicom-parser": "^1.8.21",
+    "file-saver": "^2.0.5",
     "gh-pages": "^3.1.0",
     "hammerjs": "^2.0.8",
-    "jszip": "^3.5.0",
-    "lodash": "^4.17.19",
+    "jszip": "^3.10.1",
+    "lodash": "^4.17.21",
     "lodash.template": "^4.5.0",
     "material-table": "^1.66.0",
     "mathjs": "^11.8.0",
+    "primeflex": "^3.3.0",
+    "primeicons": "^6.0.1",
+    "primereact": "9.3.0",
+    "prismjs": "1.9.0",
     "prop-types": "^15.8.1",
-    "react": "^16.13.1",
-    "react-device-detect": "^1.13.1",
-    "react-dom": "^16.13.1",
-    "react-icons": "^3.10.0",
+    "react-device-detect": "^2.2.3",
+    "react-icons": "^4.8.0",
     "react-perfect-scrollbar": "^1.5.8",
     "react-redux": "^7.2.0",
     "react-resize-detector": "^4.2.3",
     "react-rnd": "^10.1.10",
-    "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0",
+   
     "react-scroll-wheel-handler": "^1.1.5",
     "react-virtualized": "^9.21.2",
-    "react-window": "^1.8.5",
-    "redux": "^4.0.5",
+    "react-window": "^1.8.9",
+    "redux": "^4.2.1",
     "serialize-javascript": "^3.1.0",
     "set-value": "3.0.2",
     "three": "^0.118.3",
     "uuid": "^8.2.0",
     "webfontloader": "^1.6.28"
   },
+  "devDependencies": {
+    "@redux-devtools/extension": "^3.2.5",
+    "@vitejs/plugin-react": "^3.1.0",
+    "i18next": "^22.4.9",
+    "react-i18next": "^12.1.5",
+    "sass": "^1.58.0",
+    "vite": "^4.1.1"
+  },
   "scripts": {
     "start": "vite",
     "build": "vite build",
     "serve": "vite preview --port 5000"
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "engines": {
+    "node": ">=16.x"
   },
   "browserslist": {
     "production": [
@@ -71,12 +84,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@types/react": "^18.0.27",
-    "@types/react-dom": "^18.0.10",
-    "@vitejs/plugin-react": "^3.1.0",
-    "sass": "^1.58.0",
-    "vite": "^4.1.1"
   }
 }

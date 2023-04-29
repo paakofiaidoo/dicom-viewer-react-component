@@ -9,7 +9,7 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
-import packageJson from '../../package.json'
+// import packageJson from '../../package.json'
 
 const AboutDlg = ({ onClose }) => {
 
@@ -17,8 +17,8 @@ const AboutDlg = ({ onClose }) => {
 
     const linkRepository = (
         <Typography variant='body2'>
-            <Link 
-                href={urlRepository} 
+            <Link
+                href={urlRepository}
                 target='_blank'
                 style={{ color: '#999999' }}
             >
@@ -29,8 +29,8 @@ const AboutDlg = ({ onClose }) => {
 
     const version = (
         <Typography variant='body2' style={{ color: '#999999' }}>
-            {packageJson.version}
-        </Typography>        
+            {/* {packageJson.version} */}
+        </Typography>
     )
 
     return (
@@ -44,18 +44,18 @@ const AboutDlg = ({ onClose }) => {
             <DialogContent>
                 <List>
                     <ListItem>
-                        <ListItemText 
-                            primary='Repository URL:' 
-                            secondary={linkRepository} 
+                        <ListItemText
+                            primary='Repository URL:'
+                            secondary={linkRepository}
                         />
-                    </ListItem>    
+                    </ListItem>
                     <ListItem>
-                        <ListItemText 
-                            primary='Version:' 
-                            secondary={version} 
+                        <ListItemText
+                            primary='Version:'
+                            secondary={version}
                         />
-                    </ListItem>                        
-                </List>        
+                    </ListItem>
+                </List>
             </DialogContent>
             <DialogActions>
                 <Button autoFocus onClick={onClose}>

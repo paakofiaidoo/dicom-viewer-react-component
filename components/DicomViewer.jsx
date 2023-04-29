@@ -1,13 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Link from "@material-ui/core/Link";
-import Typography from "@material-ui/core/Typography";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Link from "@mui/material/Link";
+import Typography from "@mui/material/Typography";
 import Hammer from "hammerjs";
 import * as cornerstone from "cornerstone-core";
 import * as cornerstoneTools from "cornerstone-tools";
@@ -126,7 +126,7 @@ class DicomViewer extends React.Component {
     componentDidUpdate(previousProps) {
         //console.log('dicomviewer - componentDidUpdate: ')
         const isOpen = this.props.isOpen[this.props.index];
-        if (this.props.layout !== previousProps.layout && isOpen) {
+        if (this.props.layout !== previousProps.layout && isOpen && this.dicomImage) {
             cornerstone.resize(this.dicomImage);
         }
     }
@@ -213,7 +213,7 @@ class DicomViewer extends React.Component {
 
         document.getElementById(`mrtopleft-${this.props.index}`).textContent = this.mprIsOrthogonalView() ? `${capitalize(this.mprPlane)}` : `${this.PatientsName}`;
 
-        document.getElementById(`mrtopright-${this.props.index}`).textContent = `${viewport.displayedArea.brhc.x}x${viewport.displayedArea.brhc.y}`;
+        document.getElementById(`mrtopright-${this.props.index}`).textContent = `${viewport.displayedArea?.brhc?.x || ""}x${viewport.displayedArea?.brhc?.y || ""}`;
 
         document.getElementById(`mrbottomleft-${this.props.index}`).textContent = `WW/WC: ${Math.round(viewport.voi.windowWidth)}/${Math.round(viewport.voi.windowCenter)}`;
 
@@ -671,27 +671,27 @@ class DicomViewer extends React.Component {
     };
 
     runTool = (toolName, opt) => {
-        console.log(`runTool: ${toolName}, ${opt}`)
+        console.log(`runTool: ${toolName}, ${opt}`);
         if (this.state.inPlay) {
             this.runCinePlayer("pause");
         }
         switch (toolName) {
             case "setfiles": {
-                console.log(opt,"setfiles");
+                console.log(opt, "setfiles");
                 this.files = opt;
                 this.sliceMax = this.files.length;
                 this.shouldScroll = this.files.length > 1;
                 break;
             }
             case "openimage": {
-                console.trace()
+                console.trace();
                 cornerstone.disable(this.dicomImage);
                 this.displayImageFromFiles(opt);
                 break;
             }
             case "openLocalFs": {
                 cornerstone.disable(this.dicomImage);
-                console.log(opt,"openLocalFs");
+                console.log(opt, "openLocalFs");
                 this.loadImage(opt);
                 break;
             }

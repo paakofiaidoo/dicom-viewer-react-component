@@ -3,51 +3,47 @@ import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { Provider } from "react-redux";
 import store from "./store";
-import AboutDlg from "./components/AboutDlg";
+// import AboutDlg from "./components/AboutDlg";
 import Dicomdir from "./components/Dicomdir";
 import DicomViewer from "./components/DicomViewer";
 import DicomHeader from "./components/DicomHeader";
-import DownloadZipDlg from "./components/DownloadZipDlg";
+// import DownloadZipDlg from "./components/DownloadZipDlg";
 import Explorer from "./components/Explorer";
-import FsUI from "./components/FsUI";
+// import FsUI from "./components/FsUI";
 import Histogram from "./components/Histogram";
 import LayoutTool from "./components/LayoutTool";
 import ToolsPanel from "./components/ToolsPanel";
 import Measurements from "./components/Measurements";
 import OpenMultipleFilesDlg from "./components/OpenMultipleFilesDlg";
 import Settings from "./components/Settings";
-import AppBar from "@material-ui/core/AppBar";
-import Collapse from "@material-ui/core/Collapse";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Divider from "@material-ui/core/Divider";
-import Drawer from "@material-ui/core/Drawer";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import Icon from "@mdi/react";
-import IconButton from "@material-ui/core/IconButton";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
+import AppBar from "@mui/material/AppBar";
+import Collapse from "@mui/material/Collapse";
+// import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Drawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@material-ui/icons/Menu";
-import Popover from "@material-ui/core/Popover";
-import Slider from "@material-ui/core/Slider";
-import Snackbar from "@material-ui/core/Snackbar";
-import TextField from "@material-ui/core/TextField";
-import Toolbar from "@material-ui/core/Toolbar";
-import Tooltip from "@material-ui/core/Tooltip";
-import Typography from "@material-ui/core/Typography";
+import Popover from "@mui/material/Popover";
+import Slider from "@mui/material/Slider";
+import Snackbar from "@mui/material/Snackbar";
+import TextField from "@mui/material/TextField";
+import Toolbar from "@mui/material/Toolbar";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import axios from "axios";
-import Box from "@material-ui/core/Box";
+import Box from "@mui/material/Box";
 import { isMobile, isTablet } from "react-device-detect";
-
+import { Button } from "primereact/button";
 import {
     clearStore,
     localFileStore,
@@ -83,53 +79,41 @@ import {
     objectIsEmpty,
 } from "./functions";
 
-import {
-    mdiAngleAcute,
-    mdiAnimationOutline,
-    mdiArrowAll,
-    mdiArrowSplitHorizontal,
-    mdiAxisArrow,
-    mdiCamera,
-    mdiChartHistogram,
-    mdiCheck,
-    mdiCheckboxIntermediate,
-    mdiContentSaveOutline,
-    mdiCursorDefault,
-    mdiCursorPointer,
-    mdiDelete,
-    mdiEllipse,
-    mdiEyedropper,
-    mdiFileCabinet,
-    mdiFileDocument,
-    mdiFileCad,
-    mdiFolder,
-    mdiFolderMultiple,
-    mdiGesture,
-    mdiCog,
-    mdiViewGridPlusOutline,
-    mdiImageEdit,
-    mdiInformationOutline,
-    mdiInvertColors,
-    mdiMagnify,
-    mdiFolderOpen,
-    mdiRefresh,
-    mdiRectangle,
-    mdiRuler,
-    //mdiToolbox,
-    mdiTools,
-    mdiTrashCanOutline,
-    mdiVectorLink,
-    mdiVideo,
-    mdiWeb,
-    mdiPlay,
-    mdiPause,
-    mdiSkipBackward,
-    mdiSkipForward,
-    mdiSkipNext,
-    mdiSkipPrevious,
-} from "@mdi/js";
+// import {
+
+//     Check,
+//     FileDocument,
+//     FileCad,
+//     Folder,
+//     FolderMultiple,
+//     Gesture,
+//     Cog,
+//     ViewGridPlusOutline,
+//     ImageEdit,
+//     InformationOutline,
+//     InvertColors,
+//     Magnify,
+//     FolderOpen,
+//     Refresh,
+//     Rectangle,
+//     Ruler,
+//     //mdiToolbox,
+//     Tools,
+//     TrashCanOutline,
+//     VectorLink,
+//     Video,
+//     Web,
+//     PlayArrow,
+//     Pause,
+//     FastRewind,
+//     FastForward,
+//     Skip
+//     SkipNext,
+//     SkipPrevious,
+// } from "@mui/icons-material";
+import { Check } from "@material-ui/icons";
 import JSZip from "jszip";
-import { createTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 //import * as cornerstoneTools from "cornerstone-tools"
 
@@ -1730,7 +1714,7 @@ class App extends PureComponent {
     render() {
         //console.log('App render: ')
 
-        const { classes } = this.props;
+        const classes = this.props.classes || {};
 
         const primaryClass = { primary: classes.listItemText };
         const iconSize = "1.2rem";
@@ -1796,415 +1780,294 @@ class App extends PureComponent {
             return (
                 <h2>
                     Failed to download files .....
-                    <Tooltip title="Download again">
-                        <IconButton onClick={this.downloadAndLoad}>
-                            <Icon path={mdiRefresh} size={iconSize} color={iconColor} />
-                        </IconButton>
-                    </Tooltip>
+                    <Button icon="pi pi-refresh" rounded outlined onClick={this.downloadAndLoad} />
                 </h2>
             );
         }
 
         return (
-            <Box style={this.props.style}>
-                {!isOpen && (
-                    <Tooltip title="Refesh">
-                        <IconButton
-                            onClick={() => {
-                                this.handleOpenLocalFs(this.state.fileObjects);
-                                console.log("reload");
-                            }}
-                        >
-                            <Icon path={mdiRefresh} size={iconSize} color={iconColor} />
-                        </IconButton>
-                    </Tooltip>
-                )}
-
-                <AppBar className={classes.appBar} style={{ height: "min-content", position: "absolute", width: "min-content" }} position="static" elevation={0}>
-                    <Toolbar variant="regular">
-                        {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={this.toggleMainMenu}>
-                            <MenuIcon />
-                        </IconButton> */}
-                        {this.appBarTitle(classes, isOpen, dcmViewer)}
-                        {this.isMultipleFiles || mprMenu ? (
-                            <div>
-                                <div>
-                                    <IconButton onClick={this.listOpenFilesFirstFrame} size="small">
-                                        <Icon path={mdiSkipBackward} size={"1.0rem"} color={iconColor} />
-                                    </IconButton>
-                                    <IconButton onClick={this.listOpenFilesPreviousFrame} size="small">
-                                        <Icon path={mdiSkipPrevious} size={"1.0rem"} color={iconColor} />
-                                    </IconButton>
-                                    <IconButton onClick={this.listOpenFilesScrolling} size="small">
-                                        <Icon path={this.state.listOpenFilesScrolling ? mdiPause : mdiPlay} size={"1.0rem"} color={iconColor} />
-                                    </IconButton>
-                                    <IconButton onClick={this.listOpenFilesNextFrame} size="small">
-                                        <Icon path={mdiSkipNext} size={"1.0rem"} color={iconColor} />
-                                    </IconButton>
-                                    <IconButton onClick={this.listOpenFilesLastFrame} size="small">
-                                        <Icon path={mdiSkipForward} size={"1.0rem"} color={iconColor} />
-                                    </IconButton>
-                                </div>
-                                <div style={{ textAlign: "center" }}>
-                                    <Typography type="body1" style={{ fontSize: "0.80em" }}>{`${this.state.sliceIndex + 1} / ${sliceMax}`}</Typography>
-                                </div>
-                                <div style={{ width: "130px", margin: "auto" }}>
-                                    <Slider
-                                        style={{ marginTop: "-4px" }}
-                                        value={this.state.sliceIndex}
-                                        onChange={this.handleSliceChange}
-                                        color="secondary"
-                                        min={0}
-                                        max={sliceMax - 1}
-                                        step={100 / sliceMax}
-                                    />
-                                </div>
-                            </div>
-                        ) : null}
-
-                        <div className={classes.grow} />
-
-                        {isOpen && dcmViewer?.numberOfFrames > 1 ? (
-                            <Tooltip title="Cine Player">
-                                <IconButton onClick={this.cinePlayer}>
-                                    <Icon path={mdiVideo} size={iconSize} color={iconColor} />
-                                </IconButton>
-                            </Tooltip>
-                        ) : null}
-                        {isOpen ? (
-                            <Tooltip title="Reset Image">
-                                <IconButton onClick={this.resetImage}>
-                                    <Icon path={mdiRefresh} size={iconSize} color={iconColor} />
-                                </IconButton>
-                            </Tooltip>
-                        ) : null}
-                        {isOpen ? (
-                            <Tooltip title="Tools">
-                                <IconButton onClick={this.handleToolsPanel}>
-                                    <Icon path={mdiTools} size={iconSize} color={iconColor} />
-                                </IconButton>
-                            </Tooltip>
-                        ) : null}
-                        {isOpen ? (
-                            <Tooltip title="Save Screenshot">
-                                <IconButton color="inherit" onClick={this.saveShot}>
-                                    <Icon path={mdiCamera} size={iconSize} color={iconColor} />
-                                </IconButton>
-                            </Tooltip>
-                        ) : null}
-
-                        {isOpen ? (
-                            <Tooltip title="Measurements">
-                                <IconButton color="inherit" onClick={this.toggleMeasure}>
-                                    <Icon path={mdiFileCad} size={iconSize} color={iconColor} />
-                                </IconButton>
-                            </Tooltip>
-                        ) : null}
-                        {isOpen && dcmViewer?.isDicom ? (
-                            <Tooltip title="Dicom Header">
-                                <IconButton color="inherit" onClick={this.toggleHeader}>
-                                    <Icon path={mdiFileDocument} size={iconSize} color={iconColor} />
-                                </IconButton>
-                            </Tooltip>
-                        ) : null}
-                        {isDicomdir ? (
-                            <Tooltip title="DICOMDIR">
-                                <IconButton color="inherit" onClick={this.toggleDicomdir}>
-                                    <Icon path={mdiFolderOpen} size={iconSize} color={iconColor} />
-                                </IconButton>
-                            </Tooltip>
-                        ) : null}
-                        <Tooltip title="Settings">
-                            <IconButton onClick={() => this.showSettings()}>
-                                <Icon path={mdiCog} size={iconSize} color={iconColor} />
-                            </IconButton>
-                        </Tooltip>
-                        {isOpen && (
-                            <Tooltip title="Histogram">
-                                <IconButton onClick={() => this.toggleToolbox()}>
-                                    <Icon path={mdiChartHistogram} size={iconSize} color={iconColor} />
-                                </IconButton>
-                            </Tooltip>
-                        )}
-                        {isOpen && (
-                            <Tooltip title="Invert">
-                                <IconButton onClick={() => this.toolExecute("Invert")}>
-                                    <Icon path={mdiInvertColors} size={iconSize} color={iconColor} />
-                                </IconButton>
-                            </Tooltip>
-                        )}
-                        {(isOpen || this.props.mprPlane === "") && (
-                            <Tooltip title="MPR">
-                                <IconButton onClick={this.toggleMpr}>
-                                    <Icon path={mdiAxisArrow} size={iconSize} color={iconColor} />
-                                </IconButton>
-                            </Tooltip>
-                        )}
-                    </Toolbar>
-                </AppBar>
-                <Popover
-                    open={mprMenu}
-                    anchorEl={this.state.mprAnchorEl}
-                    onClose={this.toggleMpr}
-                    anchorOrigin={{
-                        vertical: "top",
-                        horizontal: "right",
-                    }}
-                    transformOrigin={{
-                        vertical: "top",
-                        horizontal: "left",
-                    }}
-                >
-                    <List dense={true} component="div">
-                        <ListItem button style={{ paddingLeft: 40 }} onClick={() => this.mprOrthogonal()}>
-                            {visibleMprOrthogonal ? (
-                                <ListItemIcon style={{ marginLeft: "-10px" }}>
-                                    <Icon path={mdiCheck} size={"1.0rem"} color={iconColor} />
-                                </ListItemIcon>
-                            ) : null}
-                            <ListItemText
-                                style={visibleMprOrthogonal ? { marginLeft: "-7px" } : { marginLeft: "40px" }}
-                                primary={
-                                    <Typography type="body1" style={{ fontSize: "0.80em", marginLeft: "-23px" }}>
-                                        Orthogonal
-                                    </Typography>
-                                }
-                            />
-                        </ListItem>
-                        <ListItem button style={{ paddingLeft: 40 }} onClick={() => this.mprCoronal()}>
-                            {visibleMprCoronal ? (
-                                <ListItemIcon style={{ marginLeft: "-10px" }}>
-                                    <Icon path={mdiCheck} size={"1.0rem"} color={iconColor} />
-                                </ListItemIcon>
-                            ) : null}
-                            <ListItemText
-                                style={visibleMprCoronal ? { marginLeft: "-7px" } : { marginLeft: "40px" }}
-                                primary={
-                                    <Typography type="body1" style={{ fontSize: "0.80em", marginLeft: "-23px" }}>
-                                        Coronal
-                                    </Typography>
-                                }
-                            />
-                        </ListItem>
-                        <ListItem button style={{ paddingLeft: 40 }} onClick={() => this.mprSagittal()}>
-                            {visibleMprSagittal ? (
-                                <ListItemIcon style={{ marginLeft: "-10px" }}>
-                                    <Icon path={mdiCheck} size={"1.0rem"} color={iconColor} />
-                                </ListItemIcon>
-                            ) : null}
-                            <ListItemText
-                                style={visibleMprSagittal ? { marginLeft: "-7px" } : { marginLeft: "40px" }}
-                                primary={
-                                    <Typography type="body1" style={{ fontSize: "0.80em", marginLeft: "-23px" }}>
-                                        Sagittal
-                                    </Typography>
-                                }
-                            />
-                        </ListItem>
-                        <ListItem button style={{ paddingLeft: 40 }} onClick={() => this.mprAxial()}>
-                            {visibleMprAxial ? (
-                                <ListItemIcon style={{ marginLeft: "-10px" }}>
-                                    <Icon path={mdiCheck} size={"1.0rem"} color={iconColor} />
-                                </ListItemIcon>
-                            ) : null}
-                            <ListItemText
-                                style={visibleMprAxial ? { marginLeft: "-7px" } : { marginLeft: "40px" }}
-                                primary={
-                                    <Typography type="body1" style={{ fontSize: "0.80em", marginLeft: "-23px" }}>
-                                        Axial
-                                    </Typography>
-                                }
-                            />
-                        </ListItem>
-                    </List>
-                </Popover>
-
-                <Drawer variant="persistent" anchor="right" open={visibleHeader} onClose={this.toggleHeader}>
-                    {visibleHeader ? <DicomHeader dcmViewer={dcmViewer} classes={classes} color={iconColor} /> : null}
-                </Drawer>
-
-                <Drawer variant="persistent" anchor="right" open={visibleMeasure} onClose={this.toggleMeasure}>
-                    <div style={{ marginTop: "48px" }}>
-                        <Toolbar variant="dense">
-                            <Typography variant="subtitle1" className={classes.title}>
-                                Measurements&nbsp;&nbsp;
-                            </Typography>
-                            <div className={classes.grow} />
-                            <IconButton color="inherit" onClick={this.saveMeasure} edge="end">
-                                <Icon path={mdiContentSaveOutline} size={iconSize} color={iconColor} />
-                            </IconButton>
-                            <IconButton color="inherit" onClick={this.clearMeasure} edge="end">
-                                <Icon path={mdiTrashCanOutline} size={iconSize} color={iconColor} />
-                            </IconButton>
-                        </Toolbar>
-                        <div>{isOpen ? <Measurements dcmViewer={dcmViewer} toolRemove={this.toolRemove} classes={classes} /> : null}</div>
-                    </div>
-                </Drawer>
-
-                <Drawer variant="persistent" anchor="right" open={visibleToolbox} onClose={this.toggleToolbox}>
-                    <div style={{ marginTop: "48px" }}>
-                        <div>{isOpen ? <Histogram key={dcmViewer?.filename} /> : null}</div>
-                    </div>
-                </Drawer>
-
-                <Drawer variant="persistent" anchor={getSettingsDicomdirView()} open={visibleDicomdir} onClose={this.toggleDicomdir}>
-                    <div>
-                        <div>{visibleDicomdir ? <Dicomdir onOpenFile={this.handleOpenFileDicomdir} onOpenFs={this.handleOpenSandboxFs} /> : null}</div>
-                    </div>
-                </Drawer>
-
-                <Drawer variant="persistent" anchor={getSettingsFsView()} open={visibleFileManager} onClose={this.toggleFileManager}>
-                    <div>
+            <>
+                <div style={this.props.style} className="surface-section px-4 py-5 md:px-6 lg:px-8">
+                    <div className="flex align-items-center flex-column lg:justify-content-between lg:flex-row dicom-topBar">
                         <div>
-                            {visibleFileManager ? (
-                                <FsUI
-                                    onOpen={this.handleOpenSandboxFs}
-                                    onOpenImage={this.handleOpenImage}
-                                    onOpenMultipleFilesCompleted={this.openMultipleFilesCompleted}
-                                    onOpenDicomdir={this.handleOpenFsDicomdir}
-                                    color={iconColor}
+                            {visibleOpenMultipleFilesDlg && <h2> Opening files.... </h2>}
+                            {!isOpen && (
+                                <Button
+                                    icon="pi pi-refresh"
+                                    rounded
+                                    outlined
+                                    // disabled={visibleOpenMultipleFilesDlg}
+                                    onClick={() => {
+                                        this.handleOpenLocalFs(this.state.fileObjects);
+                                        console.log(this.state.fileObjects.length);
+                                    }}
                                 />
+                            )}
+                            {this.appBarTitle(classes, isOpen, dcmViewer)}
+                            {/* {this.isMultipleFiles || mprMenu ? ( */}
+                            {isOpen ? (
+                                <div className="flex align-items-center flex-column ">
+                                    <div>
+                                        <Button severity="info" icon="pi pi-backward" rounded outlined onClick={this.listOpenFilesFirstFrame} />
+                                        <Button severity="info" icon="pi pi-step-backward" rounded outlined onClick={this.listOpenFilesPreviousFrame} />
+                                        {this.state.listOpenFilesScrolling ? (
+                                            <Button severity="info" icon="pi pi-pause" rounded outlined onClick={this.listOpenFilesScrolling} />
+                                        ) : (
+                                            <Button severity="info" icon="pi pi-play" rounded outlined onClick={this.listOpenFilesScrolling} />
+                                        )}
+                                        <Button severity="info" icon="pi pi-step-forward" rounded outlined onClick={this.listOpenFilesNextFrame} />
+                                        <Button severity="info" icon="pi pi-forward" rounded outlined onClick={this.listOpenFilesLastFrame} />
+                                    </div>
+                                    <div style={{ textAlign: "center" }}>
+                                        <Typography type="p1" style={{ fontSize: "0.80em" }}>{`${this.state.sliceIndex + 1} / ${sliceMax}`}</Typography>
+                                    </div>
+                                    <div style={{ width: "130px", margin: "auto" }}>
+                                        <Slider
+                                            style={{ marginTop: "-4px" }}
+                                            value={this.state.sliceIndex}
+                                            onChange={this.handleSliceChange}
+                                            color="secondary"
+                                            min={0}
+                                            max={sliceMax - 1}
+                                            step={100 / sliceMax}
+                                        />
+                                    </div>
+                                </div>
                             ) : null}
                         </div>
+                        <div className="mt-3 lg:mt-0">
+                            {isOpen && dcmViewer?.numberOfFrames > 1 ? <Button icon="pi pi-video" rounded outlined onClick={this.cinePlayer} /> : null}
+                            {isOpen && (
+                                <Button
+                                    icon="pi pi-refresh"
+                                    rounded
+                                    outlined
+                                    title="Reset"
+                                    severity="info"
+                                    onClick={() => {
+                                        this.resetImage();
+                                    }}
+                                />
+                            )}
+                            {isOpen ? <Button icon="pi pi-sliders-h" rounded outlined onClick={this.handleToolsPanel} title="Tools" severity="info" /> : null}
+                            {isOpen ? <Button icon="pi pi-camera" rounded outlined onClick={this.saveShot} title="Save image" severity="info" /> : null}
+                            {isOpen ? <Button icon="pi pi-percentage" rounded outlined onClick={this.toggleMeasure} title="Measurements" severity="info" /> : null}
+                            {isOpen && dcmViewer?.isDicom ? <Button icon="pi pi-file" title="Dicom Header" rounded outlined onClick={this.toggleHeader} severity="info" /> : null}
+                            {/* {isDicomdir ? <Button icon="pi pi-folder-open" rounded outlined onClick={this.toggleDicomdir} /> : null} */}
+                            {isOpen && <Button icon="pi pi-chart-bar" rounded title="Histogram" outlined onClick={() => this.toggleToolbox()} severity="info" />}
+                            {isOpen && <Button icon="pi pi-circle-fill" title="Invert" rounded outlined onClick={() => this.toolExecute("Invert")} severity="info" />}
+                            {(isOpen || this.props.mprPlane === "") && <Button icon="pi pi-arrows-alt" title="Axis" rounded outlined onClick={this.toggleMpr} severity="info" />}
+                            <Button icon="pi pi-cog" rounded outlined severity="info" aria-label="User" title="Setting" onClick={() => this.showSettings()} />
+                        </div>
                     </div>
-                </Drawer>
+                </div>
 
-                {visibleSettings ? <Settings onClose={this.hideSettings} /> : null}
+                <Box style={this.props.style}>
+                    <Popover
+                        open={mprMenu}
+                        anchorEl={this.state.mprAnchorEl}
+                        onClose={this.toggleMpr}
+                        anchorOrigin={{
+                            vertical: "top",
+                            horizontal: "right",
+                        }}
+                        transformOrigin={{
+                            vertical: "top",
+                            horizontal: "left",
+                        }}
+                    >
+                        <List dense={true} component="div">
+                            <ListItem button style={{ paddingLeft: 40 }} onClick={() => this.mprOrthogonal()}>
+                                {visibleMprOrthogonal ? (
+                                    <ListItemIcon style={{ marginLeft: "-10px" }}>
+                                        <Check />
+                                    </ListItemIcon>
+                                ) : null}
+                                <ListItemText
+                                    style={visibleMprOrthogonal ? { marginLeft: "-7px" } : { marginLeft: "40px" }}
+                                    primary={<p style={{ fontSize: "0.80em", marginLeft: "-23px" }}>Orthogonal</p>}
+                                />
+                            </ListItem>
+                            <ListItem button style={{ paddingLeft: 40 }} onClick={() => this.mprCoronal()}>
+                                {visibleMprCoronal ? (
+                                    <ListItemIcon style={{ marginLeft: "-10px" }}>
+                                        <Check />
+                                    </ListItemIcon>
+                                ) : null}
+                                <ListItemText
+                                    style={visibleMprCoronal ? { marginLeft: "-7px" } : { marginLeft: "40px" }}
+                                    primary={<p style={{ fontSize: "0.80em", marginLeft: "-23px" }}>Coronal</p>}
+                                />
+                            </ListItem>
+                            <ListItem button style={{ paddingLeft: 40 }} onClick={() => this.mprSagittal()}>
+                                {visibleMprSagittal ? (
+                                    <ListItemIcon style={{ marginLeft: "-10px" }}>
+                                        <Check />
+                                    </ListItemIcon>
+                                ) : null}
+                                <ListItemText
+                                    style={visibleMprSagittal ? { marginLeft: "-7px" } : { marginLeft: "40px" }}
+                                    primary={<p style={{ fontSize: "0.80em", marginLeft: "-23px" }}>Sagittal</p>}
+                                />
+                            </ListItem>
+                            <ListItem button style={{ paddingLeft: 40 }} onClick={() => this.mprAxial()}>
+                                {visibleMprAxial ? (
+                                    <ListItemIcon style={{ marginLeft: "-10px" }}>
+                                        <Check />
+                                    </ListItemIcon>
+                                ) : null}
+                                <ListItemText style={visibleMprAxial ? { marginLeft: "-7px" } : { marginLeft: "40px" }} primary={<p style={{ fontSize: "0.80em", marginLeft: "-23px" }}>Axial</p>} />
+                            </ListItem>
+                        </List>
+                    </Popover>
+                    <Drawer variant="temporary" anchor="right" open={visibleHeader} onClose={this.toggleHeader}>
+                        {visibleHeader ? <DicomHeader dcmViewer={dcmViewer} classes={classes} color={iconColor} /> : null}
+                    </Drawer>
+                    <Drawer variant="temporary" anchor="right" open={visibleToolbox} onClose={this.toggleToolbox}>
+                        <div style={{ marginTop: "48px" }}>
+                            <div>{isOpen ? <Histogram key={dcmViewer?.filename} /> : null}</div>
+                        </div>
+                    </Drawer>
 
-                {visibleAbout ? <AboutDlg onClose={this.showAbout} /> : null}
+                    <Drawer variant="temporary" anchor={getSettingsDicomdirView()} open={visibleDicomdir} onClose={this.toggleDicomdir}>
+                        <div>
+                            <div>{visibleDicomdir ? <Dicomdir onOpenFile={this.handleOpenFileDicomdir} onOpenFs={this.handleOpenSandboxFs} /> : null}</div>
+                        </div>
+                    </Drawer>
 
-                {visibleDownloadZipDlg ? <DownloadZipDlg onClose={this.hideDownloadZipDlg} url={this.url} /> : null}
+                    {visibleSettings ? <Settings onClose={this.hideSettings} /> : null}
 
-                {visibleOpenMultipleFilesDlg ? <OpenMultipleFilesDlg onClose={this.hideOpenMultipleFilesDlg} files={this.files} origin={"local"} /> : null}
+                    <div style={{ height: "calc(100vh - 48px)" }}>{this.buildLayoutGrid()}</div>
+                    <Drawer variant="temporary" anchor="right" open={visibleMeasure} onClose={this.toggleMeasure}>
+                        <div style={{ marginTop: "48px" }}>
+                            <Toolbar variant="dense">
+                                <Typography variant="subtitle1" className={classes.title}>
+                                    Measurements&nbsp;&nbsp;
+                                </Typography>
+                                <div className={classes.grow} />
+                                <IconButton color="inherit" onClick={this.saveMeasure} edge="end">
+                                    {/* <ContentSaveOutline /> */}
+                                </IconButton>
+                                <IconButton color="inherit" onClick={this.clearMeasure} edge="end">
+                                    {/* <Icon path={TrashCanOutline} size={iconSize} color={iconColor} /> */}
+                                </IconButton>
+                            </Toolbar>
+                            <div>{isOpen ? <Measurements dcmViewer={dcmViewer} toolRemove={this.toolRemove} classes={classes} /> : null}</div>
+                        </div>
+                    </Drawer>
 
-                <Dialog open={visibleClearMeasureDlg} onClose={this.hideClearMeasureDlg}>
-                    <DialogTitle>{"Are you sure to remove all the measurements?"}</DialogTitle>
-                    <DialogActions>
-                        <Button onClick={this.hideClearMeasureDlg}>Cancel</Button>
-                        <Button onClick={this.confirmClearMeasureDlg} autoFocus>
-                            Ok
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+                    {visibleOpenMultipleFilesDlg ? <OpenMultipleFilesDlg onClose={this.hideOpenMultipleFilesDlg} files={this.files} origin={"local"} /> : null}
 
-                <Dialog open={visibleZippedFileDlg} onClose={this.hideZippedFileDlg}>
-                    <DialogTitle>{"This is a zipped file, would you import into sandbox file system?"}</DialogTitle>
-                    <DialogActions>
-                        <Button onClick={this.hideZippedFileDlg}>Cancel</Button>
-                        <Button onClick={this.confirmZippedFileDlg} autoFocus>
-                            Ok
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+                    <Dialog open={visibleClearMeasureDlg} onClose={this.hideClearMeasureDlg}>
+                        <DialogTitle>{"Are you sure to remove all the measurements?"}</DialogTitle>
+                        <DialogActions>
+                            <Button onClick={this.hideClearMeasureDlg}>Cancel</Button>
+                            <Button onClick={this.confirmClearMeasureDlg} autoFocus>
+                                Ok
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
 
-                <Dialog open={this.state.visibleOpenUrl}>
-                    <DialogTitle>{"Open URL"}</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText>Insert an URL to download a DICOM or image file:</DialogContentText>
-                        <TextField autoFocus margin="dense" id="id-open-url" inputRef={(input) => (this.openUrlField = input)} fullWidth />
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={() => this.hideOpenUrl(false)}>Cancel</Button>
-                        <Button onClick={() => this.hideOpenUrl(true)} autoFocus>
-                            Ok
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+                    <Dialog open={this.state.visibleMessage}>
+                        <DialogTitle>{this.state.titleMessage}</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>{this.state.textMessage}</DialogContentText>
+                        </DialogContent>
 
-                <Dialog open={this.state.visibleMessage}>
-                    <DialogTitle>{this.state.titleMessage}</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText>{this.state.textMessage}</DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={() => this.setState({ visibleMessage: false })}>Cancel</Button>
-                    </DialogActions>
-                </Dialog>
+                        <DialogActions>
+                            <Button onClick={() => this.setState({ visibleMessage: false })}>Cancel</Button>
+                        </DialogActions>
+                    </Dialog>
 
-                <Popover
-                    id={"id-layout"}
-                    open={visibleLayout}
-                    anchorEl={this.state.anchorElLayout}
-                    onClose={this.closeLayout}
-                    anchorOrigin={{
-                        vertical: "center",
-                        horizontal: "right",
-                    }}
-                    transformOrigin={{
-                        vertical: "center",
-                        horizontal: "left",
-                    }}
-                >
-                    <LayoutTool row={this.props.layout[0] - 1} col={this.props.layout[1] - 1} onChange={this.changeLayout} />
-                </Popover>
+                    <Popover
+                        id={"id-layout"}
+                        open={visibleLayout}
+                        anchorEl={this.state.anchorElLayout}
+                        onClose={this.closeLayout}
+                        anchorOrigin={{
+                            vertical: "center",
+                            horizontal: "right",
+                        }}
+                        transformOrigin={{
+                            vertical: "center",
+                            horizontal: "left",
+                        }}
+                    >
+                        <LayoutTool row={this.props.layout[0] - 1} col={this.props.layout[1] - 1} onChange={this.changeLayout} />
+                    </Popover>
 
-                <Popover
-                    id={"id-tools"}
-                    open={visibleToolsPanel}
-                    anchorEl={this.state.anchorElToolsPanel}
-                    onClose={this.closeToolsPanel}
-                    anchorOrigin={{
-                        vertical: "bottom",
-                        horizontal: "right",
-                    }}
-                    transformOrigin={{
-                        vertical: "top",
-                        horizontal: "center",
-                    }}
-                >
-                    <ToolsPanel toolActive={this.state.toolActive} referenceLines={visibleReferenceLines} seriesLink={visibleSeriesLink} toolExecute={this.toolExecute} onChange={this.changeLayout} />
-                </Popover>
+                    <Popover
+                        id={"id-tools"}
+                        open={visibleToolsPanel}
+                        anchorEl={this.state.anchorElToolsPanel}
+                        onClose={this.closeToolsPanel}
+                        anchorOrigin={{
+                            vertical: "bottom",
+                            horizontal: "right",
+                        }}
+                        transformOrigin={{
+                            vertical: "top",
+                            horizontal: "center",
+                        }}
+                    >
+                        <ToolsPanel
+                            toolActive={this.state.toolActive}
+                            referenceLines={visibleReferenceLines}
+                            seriesLink={visibleSeriesLink}
+                            toolExecute={this.toolExecute}
+                            onChange={this.changeLayout}
+                        />
+                    </Popover>
 
-                <Snackbar
-                    anchorOrigin={{
-                        vertical: "top",
-                        horizontal: "center",
-                    }}
-                    open={visibleVolumeBuilding}
-                    autoHideDuration={6000}
-                    message="Volume building, wait please ..."
-                />
+                    <Snackbar
+                        anchorOrigin={{
+                            vertical: "top",
+                            horizontal: "center",
+                        }}
+                        open={visibleVolumeBuilding}
+                        autoHideDuration={6000}
+                        message="Volume building, wait please ..."
+                    />
 
-                <div style={{ height: "calc(100vh - 48px)" }}>{this.buildLayoutGrid()}</div>
+                    <Drawer variant="temporary" anchor="right" open={visibleExplorer} onClose={this.toggleExplorer}>
+                        <div>
+                            <div>{visibleExplorer ? <Explorer explorer={this.explorer} onSelectSeries={this.explorerOnSelectSeries} color={iconColor} /> : null}</div>
+                        </div>
+                    </Drawer>
 
-                <Drawer variant="persistent" anchor="right" open={visibleExplorer} onClose={this.toggleExplorer}>
                     <div>
-                        <div>{visibleExplorer ? <Explorer explorer={this.explorer} onSelectSeries={this.explorerOnSelectSeries} color={iconColor} /> : null}</div>
+                        <input type="file" id="file_open" style={{ display: "none" }} ref={this.fileOpen} onChange={(e) => this.handleOpenLocalFs(e.target.files)} multiple />
                     </div>
-                </Drawer>
 
-                <div>
-                    <input type="file" id="file_open" style={{ display: "none" }} ref={this.fileOpen} onChange={(e) => this.handleOpenLocalFs(e.target.files)} multiple />
-                </div>
+                    <div>
+                        <input
+                            type="file"
+                            id="file_dicomdir"
+                            style={{ display: "none" }}
+                            ref={this.openDicomdir}
+                            onChange={(e) => this.handleOpenDicomdir(e.target.files)}
+                            webkitdirectory=""
+                            mozdirectory=""
+                            directory=""
+                            multiple
+                        />
+                    </div>
 
-                <div>
-                    <input
-                        type="file"
-                        id="file_dicomdir"
-                        style={{ display: "none" }}
-                        ref={this.openDicomdir}
-                        onChange={(e) => this.handleOpenDicomdir(e.target.files)}
-                        webkitdirectory=""
-                        mozdirectory=""
-                        directory=""
-                        multiple
-                    />
-                </div>
-
-                <div>
-                    <input
-                        type="file"
-                        id="file_folder"
-                        style={{ display: "none" }}
-                        ref={this.openFolder}
-                        onChange={(e) => this.handleOpenFolder(e.target.files)}
-                        webkitdirectory=""
-                        mozdirectory=""
-                        directory=""
-                        multiple
-                    />
-                </div>
-            </Box>
+                    <div>
+                        <input
+                            type="file"
+                            id="file_folder"
+                            style={{ display: "none" }}
+                            ref={this.openFolder}
+                            onChange={(e) => this.handleOpenFolder(e.target.files)}
+                            webkitdirectory=""
+                            mozdirectory=""
+                            directory=""
+                            multiple
+                        />
+                    </div>
+                </Box>
+            </>
         );
     }
 }
@@ -2246,13 +2109,15 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
+// @ts-ignore
+// const NenApp = connect(mapStateToProps, mapDispatchToProps)(App);
 const NenApp = connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(App));
 
 const Wrap = (props) => (
     <Provider store={store}>
-        <MuiThemeProvider theme={theme}>
+        <ThemeProvider theme={theme}>
             <NenApp {...props} />
-        </MuiThemeProvider>
+        </ThemeProvider>
     </Provider>
 );
 export default Wrap;
