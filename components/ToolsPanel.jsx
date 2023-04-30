@@ -1,5 +1,4 @@
 import React, { PureComponent } from "react";
-import Icon from "@mdi/react";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 

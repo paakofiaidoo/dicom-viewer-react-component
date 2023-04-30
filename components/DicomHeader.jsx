@@ -4,7 +4,6 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Icon from "@mdi/react";
 import IconButton from "@mui/material/IconButton";
 import { SETTINGS_DCMHEADER } from "../constants/settings";
 import { toCsv } from "../functions";
