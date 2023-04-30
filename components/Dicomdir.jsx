@@ -1,13 +1,13 @@
 import React, { Fragment, PureComponent } from 'react'
 import {connect} from 'react-redux'
-import { withStyles } from '@material-ui/core/styles'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
-import Collapse from '@material-ui/core/Collapse'
+import { withStyles } from '@mui/material/styles'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import ListItemText from '@mui/material/ListItemText'
+import Collapse from '@mui/material/Collapse'
 import * as dicomParser from 'dicom-parser'
-import ExpandLessIcon from '@material-ui/icons/ExpandLess'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import ExpandLessIcon from '@mui/icons-material/ExpandLess'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import 'react-perfect-scrollbar/dist/css/styles.css'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import fs from '../fs/fs'
@@ -21,15 +21,15 @@ import {
 } from '../actions'
 
 const styles = theme => ({
-  study: { 
-    paddingLeft: theme.spacing(3) 
+  study: {
+    paddingLeft: theme.spacing(3)
   },
-  series: { 
-    paddingLeft: theme.spacing(5) 
+  series: {
+    paddingLeft: theme.spacing(5)
   },
-  images: { 
-    paddingLeft: theme.spacing(7) 
-  },  
+  images: {
+    paddingLeft: theme.spacing(7)
+  },
   listItemText:{
     fontSize:'0.80em',
   }
@@ -54,9 +54,9 @@ class Dicomdir extends PureComponent {
 
     componentDidMount() {
         if (this.props.dicomdir.origin === 'local')
-          this.openDicomdir(this.props.dicomdir.dicomdir)   
-        else 
-          this.openDicomdirFs(this.props.dicomdir.dicomdir)               
+          this.openDicomdir(this.props.dicomdir.dicomdir)
+        else
+          this.openDicomdirFs(this.props.dicomdir.dicomdir)
     }
 
     buildData = (id = null) => {
@@ -106,7 +106,7 @@ class Dicomdir extends PureComponent {
             } else if (e.dataSet.string('x00041430') === 'IMAGE') {
                 //console.log("Image - "+e.dataSet.string('x00041500'))
                 output.push({id: id, key: 'image', path: e.dataSet.string('x00041500').replace(/\\/g, '/'), value: e.dataSet.string('x00041500').split('\\').pop(), expanded: true})
-            }              
+            }
           })
       }
       //console.log('output: ', output)
@@ -178,7 +178,7 @@ class Dicomdir extends PureComponent {
       return study.value
     }
 
-    render() {   
+    render() {
       const { classes } = this.props
 
       let styleComponent = null
@@ -190,9 +190,9 @@ class Dicomdir extends PureComponent {
 
       return (
         <PerfectScrollbar>
-        <div style={styleScrollbar}>  
+        <div style={styleScrollbar}>
         <div style={styleComponent}>
-          
+
           <List>
             {this.state.data.map(({ ...patient }, index) => (
               <Fragment key={index}>
@@ -235,7 +235,7 @@ class Dicomdir extends PureComponent {
         </PerfectScrollbar>
       )
     }
-}   
+}
 
 const mapStateToProps = (state) => {
     return {
@@ -249,5 +249,5 @@ const mapDispatchToProps = (dispatch) => {
     setFsFileStore: (file) => dispatch(fsFileStore(file))
   }
 }
-  
+
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Dicomdir))

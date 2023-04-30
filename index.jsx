@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles } from "@mui/material/styles";
 import { connect } from "react-redux";
 import { Provider } from "react-redux";
 import store from "./store";
@@ -30,7 +30,7 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import MenuIcon from "@material-ui/icons/Menu";
+import MenuIcon from "@mui/icons-material/Menu";
 import Popover from "@mui/material/Popover";
 import Slider from "@mui/material/Slider";
 import Snackbar from "@mui/material/Snackbar";
@@ -79,39 +79,7 @@ import {
     objectIsEmpty,
 } from "./functions";
 
-// import {
-
-//     Check,
-//     FileDocument,
-//     FileCad,
-//     Folder,
-//     FolderMultiple,
-//     Gesture,
-//     Cog,
-//     ViewGridPlusOutline,
-//     ImageEdit,
-//     InformationOutline,
-//     InvertColors,
-//     Magnify,
-//     FolderOpen,
-//     Refresh,
-//     Rectangle,
-//     Ruler,
-//     //mdiToolbox,
-//     Tools,
-//     TrashCanOutline,
-//     VectorLink,
-//     Video,
-//     Web,
-//     PlayArrow,
-//     Pause,
-//     FastRewind,
-//     FastForward,
-//     Skip
-//     SkipNext,
-//     SkipPrevious,
-// } from "@mui/icons-material";
-import { Check } from "@material-ui/icons";
+import { Check } from "@mui/icons-material";
 import JSZip from "jszip";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
