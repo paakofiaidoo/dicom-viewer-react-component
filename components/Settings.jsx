@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles } from "@mui/material/styles";
+import { makeStyles } from "@mui/styles";
 import AppBar from "@mui/material/AppBar";
 import Checkbox from "@mui/material/Checkbox";
 import CloseIcon from "@mui/icons-material/Close";

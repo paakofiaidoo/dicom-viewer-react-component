@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { styled } from "@mui/material/styles";
+import { withStyles } from "@mui/styles";
 import { connect } from "react-redux";
 import { Provider } from "react-redux";
 import store from "./store";
@@ -8,7 +8,7 @@ import Dicomdir from "./components/Dicomdir";
 import DicomViewer from "./components/DicomViewer";
 import DicomHeader from "./components/DicomHeader";
 // import DownloadZipDlg from "./components/DownloadZipDlg";
-import Explorer from "./components/Explorer";
+// import Explorer from "./components/Explorer";
 // import FsUI from "./components/FsUI";
 import Histogram from "./components/Histogram";
 import LayoutTool from "./components/LayoutTool";
@@ -1997,11 +1997,11 @@ class App extends PureComponent {
                         message="Volume building, wait please ..."
                     />
 
-                    <Drawer variant="temporary" anchor="right" open={visibleExplorer} onClose={this.toggleExplorer}>
+                    {/* <Drawer variant="temporary" anchor="right" open={visibleExplorer} onClose={this.toggleExplorer}>
                         <div>
                             <div>{visibleExplorer ? <Explorer explorer={this.explorer} onSelectSeries={this.explorerOnSelectSeries} color={iconColor} /> : null}</div>
                         </div>
-                    </Drawer>
+                    </Drawer> */}
 
                     <div>
                         <input type="file" id="file_open" style={{ display: "none" }} ref={this.fileOpen} onChange={(e) => this.handleOpenLocalFs(e.target.files)} multiple />
@@ -2079,7 +2079,7 @@ const mapDispatchToProps = (dispatch) => {
 
 // @ts-ignore
 // const NenApp = connect(mapStateToProps, mapDispatchToProps)(App);
-const NenApp = connect(mapStateToProps, mapDispatchToProps)(styled(App, styles));
+const NenApp = connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(App));
 
 const Wrap = (props) => (
     <Provider store={store}>

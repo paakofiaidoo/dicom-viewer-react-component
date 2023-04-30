@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import { connect } from "react-redux";
-import { withStyles } from "@mui/material/styles";
+import { withStyles } from "@mui/styles";
 import DicomPreviewer from "./DicomPreviewer";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";

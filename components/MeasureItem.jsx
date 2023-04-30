@@ -12,7 +12,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import TextField from "@mui/material/TextField";
 import Toolbar from "@mui/material/Toolbar";
-import { withStyles } from "@mui/material/styles";
+import { withStyles } from "@mui/styles";
 
 const styles = (theme) => ({
     listItemText: {
