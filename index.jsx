@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { withStyles } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { connect } from "react-redux";
 import { Provider } from "react-redux";
 import store from "./store";
@@ -2079,7 +2079,7 @@ const mapDispatchToProps = (dispatch) => {
 
 // @ts-ignore
 // const NenApp = connect(mapStateToProps, mapDispatchToProps)(App);
-const NenApp = connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(App));
+const NenApp = connect(mapStateToProps, mapDispatchToProps)(styled(App, styles));
 
 const Wrap = (props) => (
     <Provider store={store}>
