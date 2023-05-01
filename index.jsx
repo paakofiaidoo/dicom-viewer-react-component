@@ -539,7 +539,12 @@ class App extends PureComponent {
                 .then((zip) => {
                     // Get the file names from the zip and set to state
                     const fileObjectsPromises = Object.values(zip.files).map(async (data, index) => {
-                        return new File([await data.async("blob")], data.name);
+                        const blob = await data.async("blob");
+                        var fileExt = data.name.split(".").pop(); // get the file extension
+                        if (fileExt === "png" || fileExt === "jpg" || fileExt === "jpeg") {
+                            return new File([await blob], data.name, { type: "image/" + fileExt });
+                        }
+                        return new File([await blob], data.name);
                     });
                     Promise.all(fileObjectsPromises)
                         .then((fileObjects) => {
@@ -1740,15 +1745,22 @@ class App extends PureComponent {
         //console.log('this.mprPlane: ', this.mprPlane)
         //console.log('mprMenu: ', mprMenu)
         //console.log('mprMode: ', this.state.mprMode)
-
+        if (!this.props.active) {
+            return <></>;
+        }
         if (this.state.isLoading) {
-            return <h2> Downloading Files ..... </h2>;
+            return <h2> Downloading Files ..... <a href={this.props.zipFile + ".zip"} download className="text-900 w-full md:w-2">
+            <Button icon="pi pi-download" rounded outlined />
+            </a></h2>;
         }
         if (!this.state.isLoading && this.state.failed) {
             return (
                 <h2>
                     Failed to download files .....
                     <Button icon="pi pi-refresh" rounded outlined onClick={this.downloadAndLoad} />
+                    <a href={this.props.zipFile + ".zip"} download className="text-900 w-full md:w-2">
+                    <Button icon="pi pi-download" rounded outlined  />
+                    </a>
                 </h2>
             );
         }
@@ -1826,7 +1838,10 @@ class App extends PureComponent {
                             {isOpen && <Button icon="pi pi-circle-fill" title="Invert" rounded outlined onClick={() => this.toolExecute("Invert")} severity="info" />}
                             {(isOpen || this.props.mprPlane === "") && <Button icon="pi pi-arrows-alt" title="Axis" rounded outlined onClick={this.toggleMpr} severity="info" />}
                             <Button icon="pi pi-cog" rounded outlined severity="info" aria-label="User" title="Setting" onClick={() => this.showSettings()} />
-                        </div>
+                            <a href={this.props.zipFile + ".zip"} download className="text-900 w-full md:w-2">
+                    <Button icon="pi pi-download" rounded outlined  />
+                    </a>
+                    </div>
                     </div>
                 </div>
 
