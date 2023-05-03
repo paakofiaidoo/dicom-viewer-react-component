@@ -403,7 +403,7 @@ class DicomViewer extends React.Component {
                 this.props.setIsOpenStore({ index: this.props.index, value: true });
             },
             (e) => {
-                console.log("error", e);
+                console.log("error 1", e);
                 this.setState({ errorOnOpenImage: "This is not a valid canvas." });
             }
         );
@@ -442,7 +442,7 @@ class DicomViewer extends React.Component {
                 this.props.setIsOpenStore({ index: this.props.index, value: true });
             },
             (e) => {
-                console.log("error", e);
+                console.log("error 2", e);
                 this.setState({ errorOnOpenImage: "This is not a valid canvas." });
             }
         );
@@ -496,7 +496,7 @@ class DicomViewer extends React.Component {
                     this.props.isOpenStore(true);
                 },
                 (e) => {
-                    console.log("error", e);
+                    console.log("error 3", e);
                     this.setState({ errorOnOpenImage: "This is not a valid JPG or PNG file." });
                 }
             );
@@ -524,7 +524,7 @@ class DicomViewer extends React.Component {
                     this.props.setIsOpenStore({ index: this.props.index, value: true });
                 },
                 (e) => {
-                    console.log("error", e);
+                    console.log("error 4", e);
                     this.setState({ errorOnOpenImage: "This is not a valid JPG or PNG file." });
                 }
             );
@@ -544,80 +544,105 @@ class DicomViewer extends React.Component {
                 imageId = "wadouri:" + url;
             }
 
-            //console.log('loadImage, imageId: ', imageId)
+            console.log("loadImage, imageId: ", imageId, this.filename);
+            let fileExt = this.filename.split(".").pop(); // get the file extension
+            if (fileExt === "png" || fileExt === "jpg" || fileExt === "jpeg") {
+                cornerstone.loadImage(imageId).then(
+                    (image) => {
+                        console.log("loadImage, image from local: ", image);
 
-            cornerstone.loadAndCacheImage(imageId).then(
-                (image) => {
-                    //console.log('loadImage, image: ', image)
-                    //let pixelDataElement = image.data.elements.x7fe00010
-                    //console.log('loadImage, pixelDataElement: ', pixelDataElement)
-                    //console.log('loadImage, getPixelData: ', image.getPixelData())
+                        this.image = image;
+                        this.isDicom = false;
+                        this.PatientsName = "";
 
-                    this.hideOpenUrlDlg();
+                        cornerstone.displayImage(element, image);
 
-                    this.image = image;
+                        this.enableTool();
 
-                    this.isDicom = true;
+                        this.props.setActiveDcm(this); // {image: this.image, element: this.dicomImage, isDicom: this.isDicom}
+                        //this.props.isOpenStore(true)
+                        this.props.setIsOpenStore({ index: this.props.index, value: true });
+                    }
+                //     (e) => {
+                //         console.log("error 4", e);
+                //         this.setState({ errorOnOpenImage: "This is not a valid JPG or PNG file." });
+                //     }
+                );
+            } else {
+                cornerstone.loadAndCacheImage(imageId).then(
+                    (image) => {
+                        console.log("loadImage, image: ", image, image.type);
 
-                    this.PatientsName = image.data.string("x00100010");
-                    this.sopInstanceUid = this.getSopInstanceUID();
+                        //let pixelDataElement = image.data.elements.x7fe00010
+                        //console.log('loadImage, pixelDataElement: ', pixelDataElement)
+                        //console.log('loadImage, getPixelData: ', image.getPixelData())
 
-                    let stack = { currentImageIdIndex: 0, imageIds: "" };
-                    this.numberOfFrames = image.data.intString("x00280008");
-                    if (this.numberOfFrames > 0) {
-                        let imageIds = [];
-                        for (var i = 0; i < this.numberOfFrames; ++i) {
-                            imageIds.push(imageId + "?frame=" + i);
+                        this.hideOpenUrlDlg();
+
+                        this.image = image;
+
+                        this.isDicom = true;
+
+                        this.PatientsName = image.data.string("x00100010");
+                        this.sopInstanceUid = this.getSopInstanceUID();
+
+                        let stack = { currentImageIdIndex: 0, imageIds: "" };
+                        this.numberOfFrames = image.data.intString("x00280008");
+                        if (this.numberOfFrames > 0) {
+                            let imageIds = [];
+                            for (var i = 0; i < this.numberOfFrames; ++i) {
+                                imageIds.push(imageId + "?frame=" + i);
+                            }
+                            stack.imageIds = imageIds;
                         }
-                        stack.imageIds = imageIds;
+
+                        cornerstone.displayImage(element, image);
+                        //cornerstoneTools.mouseInput.enable(element);
+                        //cornerstoneTools.mouseWheelInput.enable(element);
+
+                        this.enableTool();
+
+                        if (this.numberOfFrames > 1) {
+                            cornerstoneTools.addStackStateManager(element, ["stack", "playClip"]);
+                            cornerstoneTools.addToolState(element, "stack", stack);
+                            //cornerstoneTools.setToolActive('StackScrollMouseWheel', { })
+                            this.setState({ frame: 1 });
+                        }
+
+                        // Load the possible measurements from DB and save in the store
+                        db.measurement
+                            .where("sopinstanceuid")
+                            .equals(this.sopInstanceUid)
+                            .each((measure) => {
+                                //console.log('load measure from db: ', measure)
+                                //this.props.measurementStore(measure)
+                                this.measurementSave(measure);
+                                cornerstoneTools.addToolState(element, measure.tool, measure.data);
+                                this.runTool(measure.tool);
+                                cornerstone.updateImage(element);
+                                cornerstoneTools.setToolEnabled(measure.tool);
+                            })
+                            .then(() => {
+                                //console.log('this.measurements: ', this.measurements)
+                                this.props.setActiveMeasurements(this.measurements);
+                                this.props.setActiveDcm(this); // {name: this.filename, size: size, image: this.image, element: this.dicomImage, isDicom: this.isDicom}
+                                this.props.setIsOpenStore({ index: this.props.index, value: true });
+                            });
+                    },
+                    (e) => {
+                        console.log("error 5", e);
+                        this.hideOpenUrlDlg();
+                        //console.log('toString: ', e.error.toString())
+                        const error = e.error.toString();
+                        if (error === "[object XMLHttpRequest]") {
+                            this.setState({ errorOnCors: true });
+                        } else {
+                            const pos = error.indexOf(":");
+                            this.setState({ errorOnOpenImage: pos < 0 ? e.error : error.substring(pos + 1) });
+                        }
                     }
-
-                    cornerstone.displayImage(element, image);
-                    //cornerstoneTools.mouseInput.enable(element);
-                    //cornerstoneTools.mouseWheelInput.enable(element);
-
-                    this.enableTool();
-
-                    if (this.numberOfFrames > 1) {
-                        cornerstoneTools.addStackStateManager(element, ["stack", "playClip"]);
-                        cornerstoneTools.addToolState(element, "stack", stack);
-                        //cornerstoneTools.setToolActive('StackScrollMouseWheel', { })
-                        this.setState({ frame: 1 });
-                    }
-
-                    // Load the possible measurements from DB and save in the store
-                    db.measurement
-                        .where("sopinstanceuid")
-                        .equals(this.sopInstanceUid)
-                        .each((measure) => {
-                            //console.log('load measure from db: ', measure)
-                            //this.props.measurementStore(measure)
-                            this.measurementSave(measure);
-                            cornerstoneTools.addToolState(element, measure.tool, measure.data);
-                            this.runTool(measure.tool);
-                            cornerstone.updateImage(element);
-                            cornerstoneTools.setToolEnabled(measure.tool);
-                        })
-                        .then(() => {
-                            //console.log('this.measurements: ', this.measurements)
-                            this.props.setActiveMeasurements(this.measurements);
-                            this.props.setActiveDcm(this); // {name: this.filename, size: size, image: this.image, element: this.dicomImage, isDicom: this.isDicom}
-                            this.props.setIsOpenStore({ index: this.props.index, value: true });
-                        });
-                },
-                (e) => {
-                    console.log("error", e);
-                    this.hideOpenUrlDlg();
-                    //console.log('toString: ', e.error.toString())
-                    const error = e.error.toString();
-                    if (error === "[object XMLHttpRequest]") {
-                        this.setState({ errorOnCors: true });
-                    } else {
-                        const pos = error.indexOf(":");
-                        this.setState({ errorOnOpenImage: pos < 0 ? e.error : error.substring(pos + 1) });
-                    }
-                }
-            );
+                );
+            }
         }
     };
 

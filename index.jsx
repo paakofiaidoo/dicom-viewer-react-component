@@ -540,7 +540,7 @@ class App extends PureComponent {
                     // Get the file names from the zip and set to state
                     const fileObjectsPromises = Object.values(zip.files).map(async (data, index) => {
                         const blob = await data.async("blob");
-                        var fileExt = data.name.split(".").pop(); // get the file extension
+                        let fileExt = data.name.split(".").pop(); // get the file extension
                         if (fileExt === "png" || fileExt === "jpg" || fileExt === "jpeg") {
                             return new File([await blob], data.name, { type: "image/" + fileExt });
                         }
@@ -1749,9 +1749,15 @@ class App extends PureComponent {
             return <></>;
         }
         if (this.state.isLoading) {
-            return <h2> Downloading Files ..... <a href={this.props.zipFile + ".zip"} download className="text-900 w-full md:w-2">
-            <Button icon="pi pi-download" rounded outlined />
-            </a></h2>;
+            return (
+                <h2>
+                    Downloading Files .....
+                    <Button icon="pi pi-refresh" rounded outlined onClick={this.downloadAndLoad} />
+                    <a href={this.props.zipFile + ".zip"} download className="text-900 w-full md:w-2">
+                        <Button icon="pi pi-download" rounded outlined />
+                    </a>
+                </h2>
+            );
         }
         if (!this.state.isLoading && this.state.failed) {
             return (
@@ -1759,7 +1765,7 @@ class App extends PureComponent {
                     Failed to download files .....
                     <Button icon="pi pi-refresh" rounded outlined onClick={this.downloadAndLoad} />
                     <a href={this.props.zipFile + ".zip"} download className="text-900 w-full md:w-2">
-                    <Button icon="pi pi-download" rounded outlined  />
+                        <Button icon="pi pi-download" rounded outlined />
                     </a>
                 </h2>
             );
@@ -1779,7 +1785,6 @@ class App extends PureComponent {
                                     // disabled={visibleOpenMultipleFilesDlg}
                                     onClick={() => {
                                         this.handleOpenLocalFs(this.state.fileObjects);
-                                        console.log(this.state.fileObjects.length);
                                     }}
                                 />
                             )}
@@ -1839,9 +1844,9 @@ class App extends PureComponent {
                             {(isOpen || this.props.mprPlane === "") && <Button icon="pi pi-arrows-alt" title="Axis" rounded outlined onClick={this.toggleMpr} severity="info" />}
                             <Button icon="pi pi-cog" rounded outlined severity="info" aria-label="User" title="Setting" onClick={() => this.showSettings()} />
                             <a href={this.props.zipFile + ".zip"} download className="text-900 w-full md:w-2">
-                    <Button icon="pi pi-download" rounded outlined  />
-                    </a>
-                    </div>
+                                <Button icon="pi pi-download" rounded outlined />
+                            </a>
+                        </div>
                     </div>
                 </div>
 
